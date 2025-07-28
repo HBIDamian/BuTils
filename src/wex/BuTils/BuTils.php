@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace wex\BuTils;
 
+use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat as TF;
 use wex\BuTils\commands\BuTilsCommand;
+use wex\BuTils\commands\DayLockCommand;
 use wex\BuTils\commands\FlySpeedCommand;
+use wex\BuTils\commands\GamemodeAdventureCommand;
+use wex\BuTils\commands\GamemodeCreativeCommand;
+use wex\BuTils\commands\GamemodeSpectatorCommand;
+use wex\BuTils\commands\GamemodeSurvivalCommand;
 use wex\BuTils\commands\NightVisionCommand;
 use wex\BuTils\commands\NoClipCommand;
 
@@ -49,9 +55,14 @@ final class BuTils extends PluginBase{
         $commandMap = $this->getServer()->getCommandMap();
         $commandMap->registerAll($this->getName(), [
             new BuTilsCommand(),
+            new DayLockCommand(),
             new FlySpeedCommand(),
             new NoClipCommand(),
-            new NightVisionCommand()
+            new NightVisionCommand(),
+            new GamemodeCreativeCommand(),
+            new GamemodeSurvivalCommand(),
+            new GamemodeAdventureCommand(),
+            new GamemodeSpectatorCommand()
         ]);
     }
 
@@ -93,5 +104,41 @@ final class BuTils extends PluginBase{
 
     public function getSession(Player $player) : ?BuTilsSession{
         return $this->sessions[$player->getName()] ?? null;
+    }
+
+    public static function findPlayer(CommandSender $sender, string $name) : ?Player{
+        // First try exact match
+        $player = $sender->getServer()->getPlayerExact($name);
+        if($player !== null){
+            return $player;
+        }
+        
+        // Then try case-insensitive exact match
+        foreach($sender->getServer()->getOnlinePlayers() as $onlinePlayer){
+            if(strtolower($onlinePlayer->getName()) === strtolower($name)){
+                return $onlinePlayer;
+            }
+        }
+        
+        // Finally try prefix matching (case-insensitive)
+        $matches = [];
+        foreach($sender->getServer()->getOnlinePlayers() as $onlinePlayer){
+            if(stripos($onlinePlayer->getName(), $name) === 0){
+                $matches[] = $onlinePlayer;
+            }
+        }
+        
+        // Return the match if exactly one found
+        if(count($matches) === 1){
+            return $matches[0];
+        }
+        
+        // If multiple matches, send a helpful message
+        if(count($matches) > 1){
+            $matchNames = array_map(fn($p) => $p->getName(), $matches);
+            $sender->sendMessage(self::PREFIX.TF::RED."Multiple players found: " . implode(", ", $matchNames));
+        }
+        
+        return null;
     }
 }

@@ -13,6 +13,7 @@ A simple builder utility PocketMine-MP plugin, designed to be as **easy** as pos
 - [x] Toggleable Falling Blocks Gravity
 - [x] Toggleable Coral Death
 - [x] Minimalistic Overview UI
+- [x] Gamemode Commands (Adventure, Creative, Survival, Spectator)
 
 ## Commands
 
@@ -22,4 +23,7 @@ A simple builder utility PocketMine-MP plugin, designed to be as **easy** as pos
 | flyspeed    | Update your flying speed | fs, fspeed | `/flyspeed [float:speed]/[string:reset] [float:vertical speed]` | butils.command.flyspeed    |
 | nightvision | Toggle night vision      | nv         | `/nightvision`                              | butils.command.nightvision |
 | noclip      | Toggle no-clip           | nc         | `/noclip`                                   | butils.command.noclip      |
-
+| gma         | Set player to adventure mode |  | `/gma [player]`                                      | butils.command.gamemode.adventure       |
+| gmc         | Set player to creative mode |  | `/gmc [player]`                                      | butils.command.gamemode.creative         |
+| gms         | Set player to survival mode |  | `/gms [player]`                                      | butils.command.gamemode.survival          |
+| gmsp        | Set player to spectator mode |  | `/gmsp [player]`                                     | butils.command.gamemode.spectator         |

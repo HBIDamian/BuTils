@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace wex\BuTils\forms\overview\sub;
 
-use dktapps\pmforms\MenuForm;
+use pocketmine\form\Form;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginOwned;
 use pocketmine\utils\TextFormat as TF;
 use wex\BuTils\BuTils;
 
-final class CommandsForm{
+final class CommandsForm implements Form{
 
-    public static function openForm(Player $player) : void{
+    public function jsonSerialize() : array{
         $text = "";
         $plugin = BuTils::getInstance();
 
@@ -44,13 +44,19 @@ final class CommandsForm{
             }
         }
 
-        $form = new MenuForm(
-            "Commands", $text, [],
+        return [
+            "type" => "form",
+            "title" => "Commands",
+            "content" => $text,
+            "buttons" => []
+        ];
+    }
 
-            function(Player $player, int $selectedOption) : void{
+    public function handleResponse(Player $player, $data) : void{
+        // No action needed as this form is just informational
+    }
 
-            }
-        );
-        $player->sendForm($form);
+    public static function openForm(Player $player) : void{
+        $player->sendForm(new self());
     }
 }

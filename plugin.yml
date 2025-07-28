@@ -1,6 +1,6 @@
 name: BuTils
 main: wex\BuTils\BuTils
-version: 0.0.2
+version: 0.0.3
 api: 5.25.0
 author: Wex
 description: A build utility plugin that makes life easier for builders.
@@ -10,6 +10,10 @@ permissions:
   butils.command.butils:
     default: op
 
+  butils.command.daylock:
+    default: op
+    description: "Allows the user to toggle day lock on/off"
+
   butils.command.flyspeed:
     default: op
 
@@ -18,3 +22,19 @@ permissions:
 
   butils.command.nightvision:
     default: op
+
+  butils.command.gamemode.creative:
+    default: op
+    description: "Allows the user to change to creative mode"
+
+  butils.command.gamemode.survival:
+    default: op
+    description: "Allows the user to change to survival mode"
+
+  butils.command.gamemode.adventure:
+    default: op
+    description: "Allows the user to change to adventure mode"
+
+  butils.command.gamemode.spectator:
+    default: op
+    description: "Allows the user to change to spectator mode"
